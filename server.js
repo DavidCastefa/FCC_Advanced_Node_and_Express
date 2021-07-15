@@ -35,11 +35,14 @@ myDB(async client => {
     });
   });
   app.post('/login',
-    passport.authenticate('local', { failureRedirect: '/login' }),
+    passport.authenticate('local', { failureRedirect: '/' }),
     (req, res) => {
       res.redirect('/profile');
     });
-  passport.serializeUser((user, done) => {
+  app.get('/profile', (req, res) => {
+    res.render(process.cwd() + '/views/pug/profile');
+  });
+    passport.serializeUser((user, done) => {
     done(null, user._id);
   });
   passport.deserializeUser((id, done) => {
