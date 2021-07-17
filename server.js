@@ -29,6 +29,7 @@ myDB(async client => {
   const myDataBase = await client.db('database').collection('users');
   routes(app, myDataBase);
   auth(app, myDataBase);
+})
 .catch(e => {
   app.route('/').get((req, res) => {
     res.render('pug', {
