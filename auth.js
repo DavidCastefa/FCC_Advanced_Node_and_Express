@@ -1,5 +1,7 @@
+require('dotenv').config();
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
+const GitHubStrategy = require('passport-github').Strategy;
 const ObjectID = require('mongodb').ObjectID;
 const bcrypt = require('bcrypt');
 
@@ -25,6 +27,17 @@ module.exports = (app, myDataBase) => {
         }
         return done(null, user);
       });
+    }
+  ));
+
+  passport.use(new GitHubStrategy({
+      clientID: process.env.GITHUB_CLIENT_ID,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET,
+      callbackURL: 'https://fcc-advanced-node-dkrt.herokuapp.com/auth/github/callback'
+    },
+    (accessToken, refreshToken, profile, cb) => {
+      console.log(profile);
+      //Database logic here with callback containing our user object
     }
   ));
 }
