@@ -7,7 +7,8 @@ module.exports = (app, myDataBase) => {
       title: 'Connected to Database',
       message: 'Please login',
       showLogin: true,
-      showRegistration: true
+      showRegistration: true,
+      showSocialAuth: true,
     });
   });
 
@@ -15,7 +16,8 @@ module.exports = (app, myDataBase) => {
     passport.authenticate('local', { failureRedirect: '/' }),
     (req, res) => {
       res.redirect('/profile');
-    });
+    }
+  );
 
   const ensureAuthenticated = (req, res, next) => {
     if (req.isAuthenticated()) {
@@ -33,7 +35,7 @@ module.exports = (app, myDataBase) => {
     .get((req, res) => {
       req.logout();
       res.redirect('/');
-  });
+    });
 
   app.route('/register')
     .post((req, res, next) => {
@@ -60,11 +62,21 @@ module.exports = (app, myDataBase) => {
           )
         }
       })
-    },
-    passport.authenticate('local', { failureRedirect: '/' }),
+      },
+      passport.authenticate('local', { failureRedirect: '/' }),
       (req, res, next) => {
         res.redirect('/profile');
       }
+    );
+
+  app.get('/auth/github',
+    passport.authenticate('github')
+  );
+  app.get('/auth/github/callback',
+    passport.authenticate('github', { failureRedirect: '/' }),
+    (req, res) => {
+      res.redirect('/profile');
+    }
   );
 
   app.use((req, res, next) => {
