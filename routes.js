@@ -8,7 +8,7 @@ module.exports = (app, myDataBase) => {
       message: 'Please login',
       showLogin: true,
       showRegistration: true,
-      showSocialAuth: true,
+      showSocialAuth: true
     });
   });
 
